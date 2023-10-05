@@ -1,0 +1,25 @@
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:8761/eureka
+server:
+    port: 8765
+spring:
+    application:
+        name: gateway-service
+    cloud:
+        gateway:
+            routes:
+                - id: application-service
+                  uri: lb://application-service/application
+                  predicates:
+                      - Path=/application/**
+                - id: position-service
+                  uri: lb://position-service/position
+                  predicates:
+                      - Path=/position/**
+                - id: applicant-service
+                  uri: lb://applicant-service/applicant
+                  predicates:
+                      - Path=/applicant/**
+
