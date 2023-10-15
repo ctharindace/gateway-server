@@ -1,25 +1,60 @@
 eureka:
-    client:
-        serviceUrl:
-            defaultZone: http://localhost:8761/eureka
+  client:
+    serviceUrl:
+      defaultZone: http://naming-server:8761/eureka
 server:
-    port: 8765
+  port: 8765
 spring:
-    application:
-        name: gateway-service
-    cloud:
-        gateway:
-            routes:
-                - id: application-service
-                  uri: lb://application-service/application
-                  predicates:
-                      - Path=/application/**
-                - id: position-service
-                  uri: lb://position-service/position
-                  predicates:
-                      - Path=/position/**
-                - id: applicant-service
-                  uri: lb://applicant-service/applicant
-                  predicates:
-                      - Path=/applicant/**
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: application-service
+          uri: lb://application-service/application
+          predicates:
+            - Path=/application/**
+        - id: position-service-position
+          uri: lb://position-service/position
+          predicates:
+            - Path=/position/**
+        - id: position-service-fieldOfWork
+          uri: lb://position-service/fieldOfWork
+          predicates:
+            - Path=/fieldOfWork/**
+        - id: position-service-typeOfWork
+          uri: lb://position-service/typeOfWork
+          predicates:
+            - Path=/typeOfWork/**
+        - id: position-service-workGrade
+          uri: lb://position-service/workGrade
+          predicates:
+            - Path=/workGrade/**
+        - id: applicant-service
+          uri: lb://applicant-service/applicant
+          predicates:
+            - Path=/applicant/**
+        - id: masterdata-service-maritalStatus
+          uri: lb://masterdata-service/maritalStatus
+          predicates:
+            - Path=/maritalStatus/**
+        - id: masterdata-service-complexion
+          uri: lb://masterdata-service/complexion
+          predicates:
+            - Path=/complexion/**
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://zipkin-service:9411/api/v2/spans
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name},%X{traceId:-},%X{spanId:-}]"
+
+
+
 
